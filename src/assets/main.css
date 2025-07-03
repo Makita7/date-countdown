@@ -1,0 +1,57 @@
+@import './base.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+  font-family: "Roboto", sans-serif;
+}
+
+body{
+  background-image: url(@/assets/bg.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-center{
+  justify-content: center;
+}
+
+.justify-between{
+  justify-content: space-between;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.align-center{
+  align-items: center;
+}
+
+/* ANIMATIONS: */
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.5s ease;
+}
+.v-enter-from {
+  transform: translateY(-100%) translateX(-50%);
+}
+.v-leave-to {
+  transform: translateY(100%) translateX(-50%);
+}
+.v-enter-to,
+.v-leave-from {
+  transform: translateY(0px) translateX(-50%);
+}
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
