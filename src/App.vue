@@ -3,6 +3,13 @@ import { RouterLink, RouterView } from 'vue-router'
 
 </script>
 
+// TODO:
+//   - make it so that you can toggle between two types, with months or defineAsyncComponent
+//   - make pinia store with all the data and use local storage to store data, maybe change it for api
+//   - choose bg image and toggle dark mode
+//   - VueUse to us local storage and to make some sort of interesting interaction
+//   - make dialog to edit and save new date for the countdown clock
+
 <template>
   <Transition name="fade" mode="out-in">
     <header class="d-flex justify-between align-center">
