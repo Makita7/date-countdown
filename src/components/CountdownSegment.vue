@@ -14,32 +14,32 @@ defineProps({
 
 <template>
   <div class="segment">
-    <div class="number-wrapper">
-      <span class="number">{{ number }}</span>
-    </div>
-    <span class="block pt-2 label">{{ label }}</span>
+    <span class="number">{{ number }}</span>
+    <span class="pt-2 label">{{ label }}</span>
   </div>
 </template>
 
 
 <style scoped>
-.segment {
+.segment{
+  display: flex;
+  flex-direction: column;
   text-align: center;
-  width: 80px;
+  margin: 0 3rem;
+  padding: 0.6rem;
 }
-.number-wrapper {
-  position: relative;
-  padding-top: 2.5rem; /* pt-10 */
-  overflow: hidden;
+
+.number{
+  font-weight: bold;
+  font-size: 5rem;
+  color: white;
+  text-shadow: 3px 4px 10px #132647;
 }
-.number {
-  transform: translateX(-50%);
-  font-size: 32px;
-  position: absolute;
-  top: 0;
-  left: 50%;
+
+.label{
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  font-weight: 600;
 }
-.label {
-  font-size: 16px;
-}
+
 </style>
