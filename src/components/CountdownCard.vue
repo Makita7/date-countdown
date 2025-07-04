@@ -1,7 +1,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { useCounterStore } from "@/stores/counter";
 import CountdownSegment from "@/components/CountdownSegment.vue";
+
+const store = useCounterStore();
 
 // BASE DATA
 let currentDate = ref<Date>();
@@ -13,6 +16,7 @@ let currentSeconds = ref(0);
 
 
 let remainingDays = ref(0);
+let remainingDaysSimple = ref(0);
 let previousDay = ref((new Date).getDate());
 
 function getRemainingDays(){
@@ -29,6 +33,8 @@ const getData = () => {
         currentHour.value = currentDate.value.getHours();
         currentMinutes.value = currentDate.value.getMinutes();
         currentSeconds.value = currentDate.value.getSeconds();
+        const daysMonths = [31, 28, 31, 30, 31, 30, 31, 31, 31, 30, 31, 30, 31];
+        remainingDaysSimple.value = daysMonths[currentMonth.value + 1] - currentDay.value;
     }
 
     if (currentDay.value !== previousDay.value) {
@@ -53,8 +59,9 @@ onMounted(() => {
     <div class="countdown-box">
         <h1 class="text-center">New Years Countdown</h1>
         <main class="d-flex justify-center">
-            <CountdownSegment data-test="days" label="months" :number="remainingDays" />
-            <CountdownSegment data-test="days" label="days" :number="remainingDays" />
+            <CountdownSegment v-if="store.monthMode" data-test="days" label="months" :number="12-currentMonth" />
+            <CountdownSegment v-if="store.monthMode" data-test="days" label="days" :number="remainingDaysSimple" />
+            <CountdownSegment v-else data-test="days" label="days" :number="remainingDays" />
             <CountdownSegment data-test="hours" label="hours" :number="(24 - currentHour) % 24" />
             <CountdownSegment data-test="minutes" label="minutes" :number="(60 - currentMinutes) % 60" />
         <Transition name="fade" mode="out-in">

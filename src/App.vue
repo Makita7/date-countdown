@@ -1,19 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
+import { useCounterStore } from './stores/counter';
 import ToggleBtn from './components/ToggleBtn.vue';
 
-let darkMode = ref(false);
-
-function toggleDarkMode() {
-  darkMode.value = !darkMode.value;
-};
-
-let monthMode = ref(false);
-
-function toggleMonthMode() {
-  monthMode.value = !monthMode.value;
-};
+const store = useCounterStore();
 
 </script>
 
@@ -29,10 +19,10 @@ function toggleMonthMode() {
     <header class="d-flex justify-between align-center">
       <p class="logo">Coundown || Date</p>
       <nav class="d-flex align-center">
-        <img v-if="!darkMode" src="@/assets/icon-sun-filled.png" alt="light mode on" class="icon" />
+        <img v-if="!store.darkMode" src="@/assets/icon-sun-filled.png" alt="light mode on" class="icon" />
         <img v-else src="@/assets/icon-sun.png" alt="light mode off" class="icon" />
-        <ToggleBtn @toggleEmit="toggleDarkMode" />
-        <img v-if="!darkMode"  src="@/assets/icon-moon.png" alt="dark mode off" class="icon moon" />
+        <ToggleBtn @toggleEmit="store.toggleDarkMode" />
+        <img v-if="!store.darkMode"  src="@/assets/icon-moon.png" alt="dark mode off" class="icon moon" />
         <img v-else src="@/assets/icon-moon-filled.png" alt="dark mode on" class="icon moon" />
         <RouterLink to="/" class="link ml-2">Home</RouterLink>
       </nav>
@@ -48,7 +38,7 @@ function toggleMonthMode() {
 
     <div class="d-flex align-center monthToggle">
       <p class="mr-2">Days</p>
-      <ToggleBtn @toggleEmit="toggleMonthMode" />
+      <ToggleBtn @toggleEmit="store.toggleMonthMode" />
       <p class="ml-2">Month</p>
     </div>
   </div>
