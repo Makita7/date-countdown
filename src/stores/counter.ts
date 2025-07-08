@@ -1,12 +1,12 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
+import { ref } from 'vue';
+import { defineStore } from 'pinia';
 
 export const useCounterStore = defineStore('counter', () => {
 
-  let darkMode = ref(false);
+  let isDark = ref(false);
 
-  function toggleDarkMode() {
-    darkMode.value = !darkMode.value;
+  function toggleDark() {
+    isDark.value = !isDark.value;
   };
 
   let monthMode = ref(false);
@@ -15,5 +15,5 @@ export const useCounterStore = defineStore('counter', () => {
     monthMode.value = !monthMode.value;
   };
 
-  return { darkMode, toggleDarkMode, monthMode, toggleMonthMode }
+  return { isDark, toggleDark, monthMode, toggleMonthMode }
 })

@@ -1,20 +1,21 @@
 @import './base.css';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
+* {
+  padding: 0;
+  margin: 0;
+}
+
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
   font-weight: normal;
   font-family: "Roboto", sans-serif;
 }
 
-body{
-  background-image: url(@/assets/bg.jpg);
+/* body{
   background-size: cover;
   background-repeat: no-repeat;
   height: 100vh;
-}
+} */
 
 .d-flex {
   display: flex;
@@ -54,6 +55,18 @@ body{
   margin-left: 1rem;
 }
 
+.mt-1{
+  margin-top: 1rem;
+}
+
+.mt-2{
+  margin-top: 2rem;
+}
+
+.mb-2{
+  margin-bottom: 2rem;
+}
+
 /* ANIMATIONS: */
 .v-enter-active,
 .v-leave-active {
@@ -72,4 +85,9 @@ body{
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }

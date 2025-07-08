@@ -1,15 +1,18 @@
 
 <script setup lang="ts">
 import { defineEmits } from 'vue';
+import { useCounterStore } from '@/stores/counter';
 
-defineEmits(['toggleEmit'])
+defineEmits(['toggleEmit']);
+
+const store = useCounterStore();
 
 
 </script>
 
 <template>
     <label class="switch">
-        <input @click="$emit('toggleEmit')" type="checkbox">
+        <input @click="$emit('toggleEmit')" type="checkbox" :class="{dark : store.isDark}">
         <span class="slider round"></span>
     </label>
 </template>
@@ -61,6 +64,14 @@ input:checked + .slider {
 
 input:focus + .slider {
     box-shadow: 0 0 1px #17203e;
+}
+
+.dark input:checked + .slider {
+    background-color: #556cb8;
+}
+
+.dark input:focus + .slider {
+    box-shadow: 0 0 1px #556cb8;
 }
 
 input:checked + .slider:before {

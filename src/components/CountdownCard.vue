@@ -56,17 +56,15 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="countdown-box">
-        <h1 class="text-center">New Years Countdown</h1>
-        <main class="d-flex justify-center">
+    <div class="countdown-box" :class="{dark: store.isDark}">
+        <h1 class="text-center mt-2 mb-2">New Years Countdown</h1>
+        <main class="d-flex justify-center mt-1">
             <CountdownSegment v-if="store.monthMode" data-test="days" label="months" :number="12-currentMonth" />
             <CountdownSegment v-if="store.monthMode" data-test="days" label="days" :number="remainingDaysSimple" />
             <CountdownSegment v-else data-test="days" label="days" :number="remainingDays" />
             <CountdownSegment data-test="hours" label="hours" :number="(24 - currentHour) % 24" />
             <CountdownSegment data-test="minutes" label="minutes" :number="(60 - currentMinutes) % 60" />
-        <Transition name="fade" mode="out-in">
             <CountdownSegment data-test="seconds" label="seconds" :number="(60 - currentSeconds) % 60" />
-        </Transition>
         </main>
     </div>
 </template>
@@ -79,5 +77,19 @@ onMounted(() => {
     border-radius: 0.5rem;
     width: fit-content;
     margin: auto;
+    transition: opacity;
+    animation: fadeIn ease-in-out 1s;
+}
+
+.countdown-box .dark{
+    color: white;
+}
+
+h1{
+    transition: 1s ease-in-out all;
+}
+
+.dark h1{
+    color: white;
 }
 </style>

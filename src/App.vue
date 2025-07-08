@@ -15,41 +15,80 @@ const store = useCounterStore();
 //   - make dialog to edit and save new date for the countdown clock
 
 <template>
-  <Transition name="fade" mode="out-in">
-    <header class="d-flex justify-between align-center">
+  <div class="BG" :class="store.isDark === true ? 'darkBG' : 'lightBG'">
+  <div class="BG-inner">
+    <header class="d-flex justify-between align-center" :class="{dark: store.isDark}">
       <p class="logo">Coundown || Date</p>
       <nav class="d-flex align-center">
-        <img v-if="!store.darkMode" src="@/assets/icon-sun-filled.png" alt="light mode on" class="icon" />
-        <img v-else src="@/assets/icon-sun.png" alt="light mode off" class="icon" />
-        <ToggleBtn @toggleEmit="store.toggleDarkMode" />
-        <img v-if="!store.darkMode"  src="@/assets/icon-moon.png" alt="dark mode off" class="icon moon" />
-        <img v-else src="@/assets/icon-moon-filled.png" alt="dark mode on" class="icon moon" />
+        <div class="d-flex align-center" :class="{darkToggle: store.isDark}">
+          <img v-if="!store.isDark" src="@/assets/icon-sun-filled.png" alt="light mode on" class="icon" />
+          <img v-else src="@/assets/icon-sun.png" alt="light mode off" class="icon" />
+          <ToggleBtn @toggleEmit="store.toggleDark" />
+          <img v-if="!store.isDark"  src="@/assets/icon-moon.png" alt="dark mode off" class="icon moon" />
+          <img v-else src="@/assets/icon-moon-filled.png" alt="dark mode on" class="icon moon" />
+        </div>
         <RouterLink to="/" class="link ml-2">Home</RouterLink>
       </nav>
     </header>
-  </Transition>
 
-  <Transition name="fade" mode="out-in">
-    <RouterView />
-  </Transition>
+    <Transition name="fade" mode="out-in">
+      <RouterView />
+    </Transition>
 
-  <div class="d-flex align-center justify-between mt-10">
-    <button class="d-flex align-center addNew"><span>+</span> New Date</button>
+    <div class="bottomSection d-flex align-center justify-between mt-10" :class="{dark: store.isDark}">
+      <button class="d-flex align-center addNew"><span>+</span> New Date</button>
 
-    <div class="d-flex align-center monthToggle">
-      <p class="mr-2">Days</p>
-      <ToggleBtn @toggleEmit="store.toggleMonthMode" />
-      <p class="ml-2">Month</p>
+      <div class="d-flex align-center monthToggle">
+        <p class="mr-2">Days</p>
+        <ToggleBtn @toggleEmit="store.toggleMonthMode" />
+        <p class="ml-2">Month</p>
+      </div>
     </div>
+  </div>
   </div>
 </template>
 
-<style scoped>
+<style>
+.BG{
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+  transition: all 1s ease-in-out;
+  animation: fadeIn ease-in-out 1s;
+}
 
+.BG-inner{
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.lightBG{
+    background-image: url(@/assets/bg-light.jpg);
+    background-color: white;
+}
+
+.darkBG{
+  background-image: url(@/assets/bg-dark.jpg);
+}
+</style>
+
+<style scoped>
 header{
   background-color: #ffffffba;
   padding: 0.5rem 1.5rem;
   border-radius: 1rem;
+  transition: all 1s ease-in-out;
+  animation: fadeIn ease-in-out 1s;
+}
+
+header.d-flex.justify-between.align-center.dark{
+  background-color: #242424ba;
+  color: white;
+}
+
+header.d-flex.justify-between.align-center.dark .link{
+  color: white;
 }
 
 .logo{
@@ -68,6 +107,11 @@ header{
   font-size: 1.05rem;
 }
 
+.darkToggle{
+  border-radius: 10px;
+  margin-left: 0.5rem;
+}
+
 .moon{
   max-width: 2rem;
   max-height: 1.5rem;
@@ -78,6 +122,12 @@ header{
   background-color: #ffffffba;
   padding: 0.5rem 1.5rem;
   border-radius: 1rem;
+  transition: 1s all ease-in-out;
+}
+
+.dark .monthToggle{
+    background-color: #242424ba;
+    color: white;
 }
 
 .addNew{
@@ -87,6 +137,12 @@ header{
   font-size: 1rem;
   border-radius: 1rem;
   height: 3rem;
+  transition: 1s all ease-in-out;
+}
+
+.dark .addNew{
+    background-color: #242424ba;
+    color: white;
 }
 
 button.d-flex.align-center.addNew:hover {
@@ -101,6 +157,11 @@ button.d-flex.align-center.addNew:active {
 .addNew span{
   margin-right: 0.5rem;
   font-size: 1.5rem;
+}
+
+.bottomSection {
+  transition: opacity;
+  animation: fadeIn ease-in-out 1s;
 }
 
 </style>
