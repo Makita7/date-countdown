@@ -1,38 +1,37 @@
 
 <script setup lang="ts">
-import { defineComponent, defineProps, ref } from 'vue';
-import { errorMessages } from 'vue/compiler-sfc';
+import { defineComponent, defineEmits, defineProps, ref } from 'vue';
 import { useCounterStore } from '@/stores/counter';
 
 defineComponent({
-    name: "DatePickerComp"
+    name: "DatePickerComp",
 })
 
-defineProps({
+const props = defineProps({
     title: {
         type: String,
         default: "Date Picker Label"
     },
+    modelValue: String,
 })
 
+const emits = defineEmits(['update:modelValue', 'setNullDate']);
+
 const store = useCounterStore();
-const selectedDate = ref();
 
+let dateIsValid = ref(false);
 const currentDate = new Date();
-const minDate = currentDate.toISOString().split('T');
+const minDate = ref(currentDate.toISOString().split('T'));
+let errorDateInput = ref();
 
-let isValid = ref(false);
-let errorMessages = ref();
+function ValidateDateInput() {
+    dateIsValid.value = props.modelValue > minDate.value[0];
 
-function Validate() {
-    debugger;
-    isValid.value = selectedDate.value > minDate;
-
-    if(isValid.value === false){
-        selectedDate.value = null;
-        errorMessages.value = "The input must be a future date";
+    if(dateIsValid.value === false){
+        emits('setNullDate');
+        errorDateInput.value = "The input must be a future date";
     }else{
-        errorMessages.value = null;
+        errorDateInput.value = null;
     }
 }
 
@@ -40,9 +39,17 @@ function Validate() {
 
 <template>
     <div class="input-container d-flex flex-col" :class="{dark : store.isDark}">
-        <label for="date-picker">{{ title }}</label>
-        <input v-model="selectedDate" @click="(e) => e.currentTarget.showPicker()" @change="Validate()" type="date" id="date-picker" />
-        <p v-show="errorMessages" class="error">{{errorMessages}}</p>
+        <label for="date-picker">{{ props.title }}</label>
+        {{ dateIsValid }}
+        <input
+            :value="props.modelValue"
+            @click="e => e.currentTarget.showPicker()"
+            @input="e => emits('update:modelValue', e.target.value)"
+            @change="ValidateDateInput()"
+            type="date"
+            id="date-picker"
+        />
+        <p v-show="!dateIsValid" class="error">{{errorDateInput}}</p>
     </div>
 </template>
 

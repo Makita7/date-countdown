@@ -9,14 +9,27 @@ const emits = defineEmits(['closeDialog']);
 
 const store = useCounterStore();
 
+const selectedDate = ref();
+const titleInput = ref("");
+
+const setNullDate = () => {selectedDate.value = null};
+
 </script>
 
 <template>
     <div class="overlay">
         <div class="dialog" :class="{dark : store.isDark}">
             <h4 class="title">Title</h4>
-            <TextInputComp title="New Date Title"/>
-            <DatePickerComp title="Date"/>
+            <TextInputComp
+                title="New Date Title"
+                v-model="titleInput"
+                :minLength="4"
+            />
+            <DatePickerComp
+                title="Date"
+                v-model="selectedDate"
+                @setNullDate="setNullDate"
+            />
             <div class="action-bar d-flex justify-end">
                 <button @click="$emit('closeDialog')" class="secondary ml-0-5" :class="{dark: store.isDark}" >Close</button>
                 <button @click="$emit('closeDialog')" class="primary ml-0-5" :class="{dark: store.isDark}" >Add</button>

@@ -1,26 +1,32 @@
 <script setup lang="ts">
-import { ref, defineComponent, defineProps } from 'vue';
+import { ref, defineComponent, defineProps, defineEmits } from 'vue';
 import { useCounterStore } from '@/stores/counter';
 
 defineComponent({
     name: "TextInputComp",
 })
 
-defineProps({
+const props = defineProps({
     title: {
         type: String,
         default: "Input Label"
     },
-})
+    modelValue: String,
+    minLength: {
+        type: Number || String,
+        default: 0,
+    }
+});
+
+const emits = defineEmits(['update:modelValue']);
 
 const store = useCounterStore();
-const input = ref("");
 let showError = ref(false);
 let errorMessages = ref("The Title Must be at least 4 characters long");
 let isValid = ref()
 
 function checkInput(){
-    if(input.value.length >= 4){
+    if(props.modelValue.length >= props.minLength){
         isValid.value = true;
         showError.value = false;
     } else {
@@ -35,7 +41,11 @@ function checkInput(){
 <template>
     <div class="input-container d-flex flex-col" :class="{dark : store.isDark}">
         <label for="text-input">{{ title }}</label>
-        <input v-model="input" @change="checkInput" type="text" id="text-input" />
+        <input
+            :value="modelValue"
+            @input="e => emits('update:modelValue', e.target.value)"
+            @change="checkInput"
+            type="text" id="text-input" />
         <p v-show="showError" class="error">{{errorMessages}}</p>
     </div>
 </template>
