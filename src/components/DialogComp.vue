@@ -1,7 +1,7 @@
 
 <script lang="ts" setup>
-import { defineEmits, ref } from 'vue';
-import { useCounterStore } from '@/stores/counter';
+import { defineEmits, ref, watch } from 'vue';
+import { useCounterStore, CounterDates } from '@/stores/counter';
 import DatePickerComp from './DatePickerComp.vue';
 import TextInputComp from './TextInputComp.vue';
 
@@ -13,6 +13,28 @@ const selectedDate = ref();
 const titleInput = ref("");
 
 const setNullDate = () => {selectedDate.value = null};
+
+const validToSave = () => {
+    return titleInput.value.length > 0 && selectedDate.value;
+}
+
+const saveDate = () => {
+    if (validToSave()) {
+        store.addDate(titleInput.value, selectedDate.value);
+    }
+}
+
+const isDisabled = ref(true);
+
+watch([titleInput, selectedDate], () => {
+    isDisabled.value = !validToSave();
+})
+
+function closeDialog(){
+    titleInput.value = "";
+    selectedDate.value = null;
+    emits('closeDialog');
+}
 
 </script>
 
@@ -31,8 +53,8 @@ const setNullDate = () => {selectedDate.value = null};
                 @setNullDate="setNullDate"
             />
             <div class="action-bar d-flex justify-end">
-                <button @click="$emit('closeDialog')" class="secondary ml-0-5" :class="{dark: store.isDark}" >Close</button>
-                <button @click="$emit('closeDialog')" class="primary ml-0-5" :class="{dark: store.isDark}" >Add</button>
+                <button @click="closeDialog" class="secondary ml-0-5" :class="{dark: store.isDark}" >Close</button>
+                <button @click="saveDate" class="primary ml-0-5" :class="[{dark: store.isDark}, {disabledBtn: isDisabled}]" :disabled="isDisabled" >Add</button>
             </div>
         </div>
     </div>
@@ -144,5 +166,21 @@ button{
 
 .dark .secondary:active{
     background-color: #000000;
+}
+
+.disabledBtn{
+    background-color: #d1d1d1;
+}
+
+.disabledBtn:hover{
+    background-color: #d1d1d1;
+}
+
+.dark .disabledBtn{
+    background-color: #555555;
+}
+
+.dark .disabledBtn:hover{
+    background-color: #555555;
 }
 </style>

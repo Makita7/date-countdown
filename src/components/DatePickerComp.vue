@@ -40,7 +40,6 @@ function ValidateDateInput() {
 <template>
     <div class="input-container d-flex flex-col" :class="{dark : store.isDark}">
         <label for="date-picker">{{ props.title }}</label>
-        {{ dateIsValid }}
         <input
             :value="props.modelValue"
             @click="e => e.currentTarget.showPicker()"
@@ -92,4 +91,5 @@ input#date-picker {
 .errorFadeout{
     animation: fadeIn 3s reverse ease-in-out;
 }
+
 </style>

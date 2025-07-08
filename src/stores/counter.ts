@@ -1,5 +1,9 @@
 import { ref, onMounted } from 'vue';
 import { defineStore } from 'pinia';
+export interface CounterDates{
+  title: string,
+  date: string,
+}
 
 export const useCounterStore = defineStore('counter', () => {
 
@@ -15,10 +19,6 @@ export const useCounterStore = defineStore('counter', () => {
     monthMode.value = !monthMode.value;
   };
 
-  interface CounterDates{
-    title: string,
-    date: string,
-  }
 
   const formattedNewYearsDate = ref<string>("");
 
