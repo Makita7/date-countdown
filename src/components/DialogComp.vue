@@ -21,6 +21,7 @@ const validToSave = () => {
 const saveDate = () => {
     if (validToSave()) {
         store.addDate(titleInput.value, selectedDate.value);
+        closeDialog();
     }
 }
 

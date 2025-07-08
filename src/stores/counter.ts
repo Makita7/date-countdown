@@ -27,38 +27,40 @@ export const useCounterStore = defineStore('counter', () => {
     const nextYear = today.getFullYear() + 1;
     const newYearsDate = new Date(`${nextYear}-01-01`);
     formattedNewYearsDate.value = newYearsDate.toISOString().split('T')[0];
+
+    addDate("New Year", formattedNewYearsDate.value);
   }
 
   onMounted(() => {
     getNewYear();
   })
 
-  let Dates:Array<CounterDates> = [
+  let Dates = ref<CounterDates[]>([
     {
       title: "New Year",
       date: formattedNewYearsDate.value,
     },
-  ];
+  ]);
 
   function addDate(title:string, date:string){
-    Dates.push({
+    Dates.value.push({
       title: title,
       date: date
     })
   }
 
   function deleteDate(title:string){
-    Dates.filter(date => date.title === title);
+    Dates.value.filter(date => date.title === title);
   }
 
   function changeData(title:string, date:string){
-    const index = Dates.findIndex(date => date.title === title);
+    const index = Dates.value.findIndex(date => date.title === title);
 
-    Dates[index] = {
+    Dates.value[index] = {
       title: title,
       date: date,
     }
   }
 
-  return { isDark, toggleDark, monthMode, toggleMonthMode, formattedNewYearsDate, addDate, deleteDate, changeData }
+  return { isDark, toggleDark, monthMode, toggleMonthMode, formattedNewYearsDate, addDate, deleteDate, changeData, Dates }
 })
