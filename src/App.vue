@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import { useCounterStore } from './stores/counter';
 import ToggleBtn from './components/ToggleBtn.vue';
+import DialogComp from './components/DialogComp.vue';
 
 const store = useCounterStore();
+
+const dialog = ref(false);
+
+const toggleDialog = () => { dialog.value = !dialog.value };
 
 </script>
 
@@ -36,7 +42,8 @@ const store = useCounterStore();
     </Transition>
 
     <div class="bottomSection d-flex align-center justify-between mt-10" :class="{dark: store.isDark}">
-      <button class="d-flex align-center addNew"><span>+</span> New Date</button>
+      <button @click="toggleDialog" class="d-flex align-center addNew"><span>+</span> New Date</button>
+      <DialogComp v-if="dialog" @closeDialog="toggleDialog"/>
 
       <div class="d-flex align-center monthToggle">
         <p class="mr-2">Days</p>
@@ -138,6 +145,7 @@ header.d-flex.justify-between.align-center.dark .link{
   border-radius: 1rem;
   height: 3rem;
   transition: 1s all ease-in-out;
+  animation: fadeIn ease-in-out;
 }
 
 .dark .addNew{
@@ -152,6 +160,15 @@ button.d-flex.align-center.addNew:hover {
 
 button.d-flex.align-center.addNew:active {
     background-color: #edcf92;
+}
+
+.dark button.d-flex.align-center.addNew:hover {
+    background-color: #4d4d56ba;
+    font-weight: bold;
+}
+
+.dark button.d-flex.align-center.addNew:active {
+    background-color: #8484a1ba;
 }
 
 .addNew span{
