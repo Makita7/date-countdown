@@ -1,8 +1,9 @@
 import { ref, onMounted } from 'vue';
 import { defineStore } from 'pinia';
+import { useLocalStorage } from '@vueuse/core';
 export interface CounterDates{
   title: string,
-  date: string,
+  date: Date,
 }
 
 export const useCounterStore = defineStore('counter', () => {
@@ -20,32 +21,30 @@ export const useCounterStore = defineStore('counter', () => {
   };
 
 
-  const formattedNewYearsDate = ref<string>("");
+  const formattedNewYearsDate = ref<Date>();
 
   function getNewYear(){
     const today = new Date();
     const nextYear = today.getFullYear() + 1;
-    const newYearsDate = new Date(`${nextYear}-01-01`);
-    formattedNewYearsDate.value = newYearsDate.toISOString().split('T')[0];
+    formattedNewYearsDate.value = new Date(`${nextYear}-01-01`);
+    // const newYearsDate = new Date(`${nextYear}-01-01`);
+    // formattedNewYearsDate.value = newYearsDate.toISOString().split('T')[0];
 
-    addDate("New Year", formattedNewYearsDate.value);
+    addDate("New Year", formattedNewYearsDate.value as Date);
   }
 
   onMounted(() => {
     getNewYear();
   })
 
-  let Dates = ref<CounterDates[]>([
-    {
-      title: "New Year",
-      date: formattedNewYearsDate.value,
-    },
-  ]);
+  let Dates = ref<CounterDates[]>([]);
 
-  function addDate(title:string, date:string){
+  function addDate(title:string, date:Date){
+    const dateFromInput = new Date(date);
+
     Dates.value.push({
       title: title,
-      date: date
+      date: dateFromInput,
     })
   }
 
@@ -55,10 +54,11 @@ export const useCounterStore = defineStore('counter', () => {
 
   function changeData(title:string, date:string){
     const index = Dates.value.findIndex(date => date.title === title);
+    const dateFromInput = new Date(date);
 
     Dates.value[index] = {
       title: title,
-      date: date,
+      date: dateFromInput,
     }
   }
 

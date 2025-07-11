@@ -31,7 +31,11 @@ const toggleDialog = () => { dialog.value = !dialog.value };
           <img v-if="!store.isDark"  src="@/assets/icon-moon.png" alt="dark mode off" class="icon moon" />
           <img v-else src="@/assets/icon-moon-filled.png" alt="dark mode on" class="icon moon" />
         </div>
-        <!-- TODO: make links dynamic to go to the diferent dates -->
+        <!-- TODO:
+          -make links dynamic to go to the diferent dates
+          -add vueuse localstorage to save dates
+          -make sure that newYear is added only once
+        -->
         <RouterLink v-for="date in store.Dates" :key="`${date.title}, ${date.date}`" to="/" class="link ml-2">{{date.title}}</RouterLink>
       </nav>
     </header>
