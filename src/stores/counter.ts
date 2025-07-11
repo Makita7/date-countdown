@@ -4,6 +4,7 @@ import { useLocalStorage } from '@vueuse/core';
 export interface CounterDates{
   title: string,
   date: Date,
+  to: String,
 }
 
 export const useCounterStore = defineStore('counter', () => {
@@ -39,12 +40,20 @@ export const useCounterStore = defineStore('counter', () => {
 
   let Dates = ref<CounterDates[]>([]);
 
+  const formatTo = (to:String) => {
+    let res = to;
+    res = res.toLocaleLowerCase();
+    res = res.replace(/ /g, "-");
+    return res;
+  }
+
   function addDate(title:string, date:Date){
-    const dateFromInput = new Date(date);
+    const dateFromInput = new Date(date + "T00:00");
 
     Dates.value.push({
       title: title,
       date: dateFromInput,
+      to: formatTo(title),
     })
   }
 
@@ -54,11 +63,12 @@ export const useCounterStore = defineStore('counter', () => {
 
   function changeData(title:string, date:string){
     const index = Dates.value.findIndex(date => date.title === title);
-    const dateFromInput = new Date(date);
+    const dateFromInput = new Date(date + "T00:00");
 
     Dates.value[index] = {
       title: title,
       date: dateFromInput,
+      to: formatTo(title),
     }
   }
 

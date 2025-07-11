@@ -36,7 +36,7 @@ const toggleDialog = () => { dialog.value = !dialog.value };
           -add vueuse localstorage to save dates
           -make sure that newYear is added only once
         -->
-        <RouterLink v-for="date in store.Dates" :key="`${date.title}, ${date.date}`" to="/" class="link ml-2">{{date.title}}</RouterLink>
+        <RouterLink v-for="date in store.Dates" :key="`${date.title}, ${date.date}`" :to="`/${date.to}`" class="link ml-2">{{date.title}}</RouterLink>
       </nav>
     </header>
 

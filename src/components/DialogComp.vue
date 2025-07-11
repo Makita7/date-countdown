@@ -1,7 +1,7 @@
 
 <script lang="ts" setup>
 import { defineEmits, ref, watch } from 'vue';
-import { useCounterStore, CounterDates } from '@/stores/counter';
+import { useCounterStore } from '@/stores/counter';
 import DatePickerComp from './DatePickerComp.vue';
 import TextInputComp from './TextInputComp.vue';
 
@@ -20,7 +20,8 @@ const validToSave = () => {
 
 const saveDate = () => {
     if (validToSave()) {
-        store.addDate(titleInput.value, selectedDate.value);
+        // store.addDate(titleInput.value, new Date(selectedDate.value + "T00:00"));
+        store.addDate(titleInput.value, new Date(selectedDate.value + "T00:00"));
         closeDialog();
     }
 }

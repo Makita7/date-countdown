@@ -6,12 +6,12 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/new-year',
       name: 'home',
       component: HomeView,
       children: [
         {
-          path: ':name',
+          path: ':to',
           component: CountdownCard,
         }
       ]
