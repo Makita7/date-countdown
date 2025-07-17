@@ -31,7 +31,7 @@ const toggleDialog = () => { dialog.value = !dialog.value };
           <img v-if="!store.isDark"  src="@/assets/icon-moon.png" alt="dark mode off" class="icon moon" />
           <img v-else src="@/assets/icon-moon-filled.png" alt="dark mode on" class="icon moon" />
         </div>
-        <!-- TODO: add vueuse localstorage to save dates -->
+        <!-- TODO: add vueuse localstorage to save dates, add custom directives -->
         <RouterLink v-for="date in store.Dates" :key="`${date.title}, ${date.date}`" :to="`/${date.to}`" class="link ml-2">{{date.title}}</RouterLink>
       </nav>
     </header>
