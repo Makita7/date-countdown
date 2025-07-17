@@ -22,14 +22,14 @@ export const useCounterStore = defineStore('counter', () => {
   };
 
 
-  const formattedNewYearsDate = ref<Date>();
+  const formattedNewYearsDate = ref();
 
   function getNewYear(){
     const today = new Date();
     const nextYear = today.getFullYear() + 1;
     formattedNewYearsDate.value = new Date(`${nextYear}-01-01`);
-    // const newYearsDate = new Date(`${nextYear}-01-01`);
-    // formattedNewYearsDate.value = newYearsDate.toISOString().split('T')[0];
+    const newYearsDate = new Date(`${nextYear}-01-01`);
+    formattedNewYearsDate.value = newYearsDate.toISOString().split('T')[0];
 
     addDate("New Year", formattedNewYearsDate.value as Date);
   }
@@ -48,7 +48,8 @@ export const useCounterStore = defineStore('counter', () => {
   }
 
   function addDate(title:string, date:Date){
-    const dateFromInput = new Date(date + "T00:00");
+    const dateFromInput = new Date(`${date}T00:00:00`);
+    console.log(date)
 
     Dates.value.push({
       title: title,

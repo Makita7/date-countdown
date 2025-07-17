@@ -21,7 +21,7 @@ const validToSave = () => {
 const saveDate = () => {
     if (validToSave()) {
         // store.addDate(titleInput.value, new Date(selectedDate.value + "T00:00"));
-        store.addDate(titleInput.value, new Date(selectedDate.value + "T00:00"));
+        store.addDate(titleInput.value, selectedDate.value);
         closeDialog();
     }
 }
@@ -43,6 +43,7 @@ function closeDialog(){
 <template>
     <div class="overlay">
         <div class="dialog" :class="{dark : store.isDark}">
+        {{ new Date(selectedDate) }}
             <h4 class="title">Title</h4>
             <TextInputComp
                 title="New Date Title"
