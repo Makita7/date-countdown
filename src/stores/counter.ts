@@ -49,7 +49,6 @@ export const useCounterStore = defineStore('counter', () => {
 
   function addDate(title:string, date:Date){
     const dateFromInput = new Date(`${date}T00:00:00`);
-    console.log(date)
 
     Dates.value.push({
       title: title,

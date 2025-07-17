@@ -20,7 +20,6 @@ const validToSave = () => {
 
 const saveDate = () => {
     if (validToSave()) {
-        // store.addDate(titleInput.value, new Date(selectedDate.value + "T00:00"));
         store.addDate(titleInput.value, selectedDate.value);
         closeDialog();
     }
@@ -38,12 +37,15 @@ function closeDialog(){
     emits('closeDialog');
 }
 
+
+function handleClickOutside(){
+    closeDialog();
+}
 </script>
 
 <template>
     <div class="overlay">
-        <div class="dialog" :class="{dark : store.isDark}">
-        {{ new Date(selectedDate) }}
+        <div class="dialog" :class="{dark : store.isDark}" v-click-outside="handleClickOutside">
             <h4 class="title">Title</h4>
             <TextInputComp
                 title="New Date Title"

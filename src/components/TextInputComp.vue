@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, defineComponent, defineProps, defineEmits } from 'vue';
 import { useCounterStore } from '@/stores/counter';
+import vFocus from '@/directives/vFocus';
 
 defineComponent({
     name: "TextInputComp",
@@ -15,7 +16,8 @@ const props = defineProps({
     minLength: {
         type: Number || String,
         default: 0,
-    }
+    },
+    vFocus: Boolean,
 });
 
 const emits = defineEmits(['update:modelValue']);
@@ -45,6 +47,7 @@ function checkInput(){
             :value="modelValue"
             @input="e => emits('update:modelValue', e.target.value)"
             @change="checkInput"
+            v-focus
             type="text" id="text-input" />
         <p v-show="showError" class="error">{{errorMessages}}</p>
     </div>

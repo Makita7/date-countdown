@@ -13,11 +13,6 @@ const toggleDialog = () => { dialog.value = !dialog.value };
 
 </script>
 
-// TODO:
-//   - make pinia store with all the data and use local storage to store data, maybe change it for api
-//   - VueUse to us local storage and to make some sort of interesting interaction
-//   - make dialog to edit and save new date for the countdown clock
-
 <template>
   <div class="BG" :class="store.isDark === true ? 'darkBG' : 'lightBG'">
   <div class="BG-inner">
@@ -31,14 +26,18 @@ const toggleDialog = () => { dialog.value = !dialog.value };
           <img v-if="!store.isDark"  src="@/assets/icon-moon.png" alt="dark mode off" class="icon moon" />
           <img v-else src="@/assets/icon-moon-filled.png" alt="dark mode on" class="icon moon" />
         </div>
-        <!-- TODO: add vueuse localstorage to save dates, add custom directives -->
+        <!-- TODO: add vueuse localstorage to save datess -->
         <RouterLink v-for="date in store.Dates" :key="`${date.title}, ${date.date}`" :to="`/${date.to}`" class="link ml-2">{{date.title}}</RouterLink>
       </nav>
     </header>
 
-    <Transition name="fade" mode="out-in">
-      <RouterView />
-    </Transition>
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <KeepAlive>
+          <component :is="Component" />
+        </KeepAlive>
+      </transition>
+    </router-view>
 
     <div class="bottomSection d-flex align-center justify-between mt-10" :class="{dark: store.isDark}">
       <button @click="toggleDialog" class="d-flex align-center addNew"><span>+</span> New Date</button>
