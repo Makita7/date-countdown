@@ -9,12 +9,12 @@ const router = createRouter({
       path: '/new-year',
       name: 'home',
       component: HomeView,
-      children: [
-        {
-          path: ':to',
-          component: CountdownCard,
-        }
-      ]
+    },
+    {
+      path: '/:to',
+      name: 'countdown',
+      component: CountdownCard,
+
     },
   ],
 })
