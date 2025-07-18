@@ -66,7 +66,7 @@ input#date-picker {
 }
 
 .dark input#date-picker{
-    background-color: #061429;
+    background-color: #0f1621;
     color: white;
     border: #061429;
 }

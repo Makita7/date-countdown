@@ -2,14 +2,15 @@
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import { useCounterStore } from './stores/counter';
+import { useDialogsStore } from './stores/dialogs';
 import ToggleBtn from './components/ToggleBtn.vue';
-import DialogComp from './components/DialogComp.vue';
+import AddDateDialogComp from './components/AddDateDialogComp.vue';
+import EditDateDialogComp from './components/EditDateDialogComp.vue';
+import { useRoute } from 'vue-router';
 
 const store = useCounterStore();
-
-const dialog = ref(false);
-
-const toggleDialog = () => { dialog.value = !dialog.value };
+const dialogStore = useDialogsStore();
+const route = useRoute();
 
 </script>
 
@@ -17,7 +18,9 @@ const toggleDialog = () => { dialog.value = !dialog.value };
   <div class="BG" :class="store.isDark === true ? 'darkBG' : 'lightBG'">
   <div class="BG-inner">
     <header class="d-flex justify-between align-center" :class="{dark: store.isDark}">
-      <p class="logo">Coundown || Date</p>
+      <RouterLink to="/" class="logo" :class="{dark: store.isDark}">
+        Coundown || Date
+      </RouterLink>
       <nav class="d-flex align-center">
         <div class="d-flex align-center" :class="{darkToggle: store.isDark}">
           <img v-if="!store.isDark" src="@/assets/icon-sun-filled.png" alt="light mode on" class="icon" />
@@ -26,7 +29,6 @@ const toggleDialog = () => { dialog.value = !dialog.value };
           <img v-if="!store.isDark"  src="@/assets/icon-moon.png" alt="dark mode off" class="icon moon" />
           <img v-else src="@/assets/icon-moon-filled.png" alt="dark mode on" class="icon moon" />
         </div>
-        <!-- TODO: add vueuse localstorage to save datess -->
         <RouterLink v-for="date in store.Dates" :key="`${date.title}, ${date.date}`" :to="`/${date.to}`" class="link ml-2">{{date.title}}</RouterLink>
       </nav>
     </header>
@@ -39,11 +41,13 @@ const toggleDialog = () => { dialog.value = !dialog.value };
       </transition>
     </router-view>
 
-    <div class="bottomSection d-flex align-center justify-between mt-10" :class="{dark: store.isDark}">
-      <button @click="toggleDialog" class="d-flex align-center addNew"><span>+</span> New Date</button>
-      <DialogComp v-if="dialog" @closeDialog="toggleDialog"/>
+    <EditDateDialogComp v-if="dialogStore.editDialog" @close-dialog="dialogStore.toggleEditDialog" />
 
-      <div class="d-flex align-center monthToggle">
+    <div class="bottomSection d-flex align-center justify-between" :class="[{dark: store.isDark}, {'mt-10': route.path !== '/'}]">
+      <button @click="dialogStore.toggleAddDialog" class="d-flex align-center addNew"><span>+</span> New Date</button>
+      <AddDateDialogComp v-if="dialogStore.addDialog" @closeDialog="dialogStore.toggleAddDialog"/>
+
+      <div v-if="route.path !== '/'" class="d-flex align-center monthToggle">
         <p class="mr-2">Days</p>
         <ToggleBtn @toggleEmit="store.toggleMonthMode" />
         <p class="ml-2">Month</p>
@@ -99,6 +103,12 @@ header.d-flex.justify-between.align-center.dark .link{
 .logo{
   font-size: 1.2rem;
   font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+
+.dark .logo {
+  color: white;
 }
 
 .link{

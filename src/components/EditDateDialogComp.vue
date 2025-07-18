@@ -1,16 +1,21 @@
 
 <script lang="ts" setup>
-import { defineEmits, ref, watch } from 'vue';
+import { defineEmits, onMounted, ref, watch } from 'vue';
 import { useCounterStore } from '@/stores/counter';
+import { useRoute, useRouter } from 'vue-router';
 import DatePickerComp from './DatePickerComp.vue';
 import TextInputComp from './TextInputComp.vue';
 
 const emits = defineEmits(['closeDialog']);
 
+const route = useRoute();
+const router = useRouter();
+
 const store = useCounterStore();
 
 const selectedDate = ref();
 const titleInput = ref("");
+const to = ref("");
 
 const setNullDate = () => {selectedDate.value = null};
 
@@ -18,9 +23,9 @@ const validToSave = () => {
     return titleInput.value.length > 0 && selectedDate.value;
 }
 
-const saveDate = () => {
+const editDate = () => {
     if (validToSave()) {
-        store.addDate(titleInput.value, selectedDate.value);
+        store.changeData(titleInput.value, selectedDate.value, to.value);
         closeDialog();
     }
 }
@@ -32,8 +37,9 @@ watch([titleInput, selectedDate], () => {
 })
 
 function closeDialog(){
-    titleInput.value = "";
-    selectedDate.value = null;
+    titleInput.value = data.value.title;
+    selectedDate.value = new Date(data.value.date).toISOString().split('T')[0];
+    DeleteBtn.value = false;
     emits('closeDialog');
 }
 
@@ -41,12 +47,43 @@ function closeDialog(){
 function handleClickOutside(){
     closeDialog();
 }
+
+const data = ref()
+
+function getExistingData( ){
+    data.value = store.Dates[store.findDateIndex(route.path)];
+
+    titleInput.value = data.value.title;
+    selectedDate.value = new Date(data.value.date).toISOString().split('T')[0];
+    to.value = data.value.to;
+}
+
+onMounted(() => {
+    getExistingData();
+})
+
+watch([route.path], () => {
+    getExistingData();
+})
+
+let DeleteBtn = ref(false);
+
+function toggleDelete(){
+    DeleteBtn.value = !DeleteBtn.value
+}
+
+function deleteDate(){
+    store.deleteDate(data.value.title);
+    router.push('/');
+    closeDialog();
+}
 </script>
 
 <template>
     <div class="overlay">
-        <div class="dialog" :class="{dark : store.isDark}" v-click-outside="handleClickOutside">
-            <h4 class="title">Title</h4>
+        <div class="dialog" :class="{dark : store.isDark}" :style="store.isDark? 'background-color: #3a3844 !important; color: white; box-shadow: 0 0 10px 5px rgb(0, 0, 0);' : ''">
+            <h4 class="title text-center">Edit Existing Date</h4>
+
             <TextInputComp
                 title="New Date Title"
                 v-model="titleInput"
@@ -57,9 +94,17 @@ function handleClickOutside(){
                 v-model="selectedDate"
                 @setNullDate="setNullDate"
             />
+            <div class="d-flex deleteCont align-center">
+                <button v-if="!DeleteBtn" @click="toggleDelete" class="delete pr-1 fading">Delete Date</button>
+                <div v-else class="d-flex align-center fading">
+                    <p class="pr-1">Are you sure you want to <b>Delete Date?</b></p>
+                    <button @click="toggleDelete" class="secondary ml-0-5">No</button>
+                    <button @click="deleteDate()" class="delete ml-0-5">Yes</button>
+                </div>
+            </div>
             <div class="action-bar d-flex justify-end">
                 <button @click="closeDialog" class="secondary ml-0-5" :class="{dark: store.isDark}" >Close</button>
-                <button @click="saveDate" class="primary ml-0-5" :class="[{dark: store.isDark}, {disabledBtn: isDisabled}]" :disabled="isDisabled" >Add</button>
+                <button @click="editDate()" class="primary ml-0-5" :class="[{dark: store.isDark}, {disabledBtn: isDisabled}]" :disabled="isDisabled" >Save</button>
             </div>
         </div>
     </div>
@@ -96,7 +141,7 @@ function handleClickOutside(){
 }
 
 .dark .dialog{
-    background-color: #3a3844;
+    background-color: rgb(33 33 37) !important;
     color: white;
     box-shadow: 0 0 10px 5px rgb(0, 0, 0);
 }
@@ -109,6 +154,23 @@ function handleClickOutside(){
     margin: 0.5rem 0 0 0;
 }
 
+.deleteCont{
+    margin: 1rem 0.5rem;
+}
+
+.fading{
+    transition: opacity;
+    animation: fadeIn ease-in-out 1s;
+}
+
+.pr-1{
+    padding-right: 1rem;
+}
+
+.pr-2{
+    padding-right: 2rem;
+}
+
 button{
     padding: 8px 14px;
     border: none;
@@ -118,74 +180,5 @@ button{
     font-weight: 600;
     transition: 0.2s all ease-in-out;
     animation: fadeIn ease-in-out;
-}
-
-.primary{
-    background-color: #ffbb72;
-}
-
-.primary:hover{
-    background-color: #f5b571;
-}
-
-.primary:active{
-    background-color: #e0a566;
-}
-
-.secondary{
-    background-color: #fee6cd;
-}
-
-.secondary:hover{
-    background-color: #ffddb6;
-}
-
-.secondary:active{
-    background-color: #e8c7a1;
-}
-
-.dark button{
-    background-color: gray;
-    color: white;
-}
-
-.dark .primary{
-    background-color: rgba(117, 112, 138, 0.75);
-}
-
-.dark .primary:hover{
-    background-color: rgba(91, 87, 108, 0.75);
-}
-
-.dark .primary:active{
-    background-color: rgba(64, 59, 84, 0.75);
-}
-
-.dark .secondary{
-    background-color: #101013ab;
-}
-
-.dark .secondary:hover{
-    background-color: #101013;
-}
-
-.dark .secondary:active{
-    background-color: #000000;
-}
-
-.disabledBtn{
-    background-color: #d1d1d1;
-}
-
-.disabledBtn:hover{
-    background-color: #d1d1d1;
-}
-
-.dark .disabledBtn{
-    background-color: #555555;
-}
-
-.dark .disabledBtn:hover{
-    background-color: #555555;
 }
 </style>

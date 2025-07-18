@@ -66,7 +66,7 @@ input#text-input {
 }
 
 .dark input{
-    background-color: #061429;
+    background-color: #0f1621;
     color: white;
     border: #061429;
 }

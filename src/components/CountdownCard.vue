@@ -1,11 +1,13 @@
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
 import { useCounterStore } from "@/stores/counter";
 import CountdownSegment from "@/components/CountdownSegment.vue";
 import { useRoute } from "vue-router";
+import { useDialogsStore } from "@/stores/dialogs";
 
 const store = useCounterStore();
+const dialogStore = useDialogsStore();
 const route = useRoute();
 
 const timeLeft = ref({
@@ -61,8 +63,7 @@ function getMonthAndDayDiff(from: Date, to: Date) {
     return { months, days };
 }
 
-
-onMounted(() => {
+function getData(){
     const match = store.Dates.find(d => `/${d.to}` === route.path);
 
     if(match){
@@ -71,17 +72,30 @@ onMounted(() => {
         calculateCountdown();
         interval = setInterval(calculateCountdown, 1000);
     }
+}
+
+onMounted(() => {
+    getData();
 })
 
 onUnmounted(() => {
     clearInterval(interval);
 })
 
+watch([() => store.Dates, route.path],
+    getData,
+{ deep: true });
+
 </script>
 
 <template>
     <div class="countdown-box" :class="{dark: store.isDark}">
-        <h1 class="text-center mt-2 mb-2">{{ thisTitle }}</h1>
+        <h1 class="text-center mt-2 mb-2 d-flex align-center justify-center">
+            {{ thisTitle }}
+            <img v-if="!store.isDark" @click="dialogStore.toggleEditDialog()" src="@/assets/edit-light.png" :alt="`edit date names: ${thisTitle}`" class="icon editIcon" />
+            <img v-else @click="dialogStore.toggleEditDialog()" src="@/assets/edit-dark.png" :alt="`edit date names: ${thisTitle}`" class="icon editIcon" />
+        </h1>
+
         <main class="d-flex justify-center mt-1">
             <CountdownSegment v-if="store.monthMode" data-test="months" label="months" :number="timeLeft.months" />
             <CountdownSegment v-if="store.monthMode" data-test="days" label="days" :number="timeLeft.days" />
@@ -115,5 +129,9 @@ h1{
 
 .dark h1{
     color: white;
+}
+
+.editIcon{
+    cursor: pointer;
 }
 </style>
