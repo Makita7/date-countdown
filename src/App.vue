@@ -19,7 +19,7 @@ const route = useRoute();
   <div class="BG-inner">
     <header class="d-flex justify-between align-center" :class="{dark: store.isDark}">
       <RouterLink to="/" class="logo" :class="{dark: store.isDark}">
-        Coundown || Date
+        <i>Coundown</i> // <b><i>Date</i></b>
       </RouterLink>
       <nav class="d-flex align-center">
         <div class="d-flex align-center" :class="{darkToggle: store.isDark}">
@@ -104,11 +104,19 @@ header.d-flex.justify-between.align-center.dark .link{
   font-size: 1.2rem;
   font-weight: bold;
   text-decoration: none;
-  color: black;
+  color: #1f3682;
+}
+
+.logo b{
+  color: #9f5948;
 }
 
 .dark .logo {
-  color: white;
+  color: #8ea0df;
+}
+
+.dark .logo b{
+  color: #db9e8f;
 }
 
 .link{
