@@ -1,0 +1,94 @@
+.primary{
+    background-color: #ffbb72;
+}
+
+.primary:hover{
+    background-color: #f5b571;
+}
+
+.primary:active{
+    background-color: #e0a566;
+}
+
+.secondary{
+    background-color: #fee6cd;
+}
+
+.secondary:hover{
+    background-color: #ffddb6;
+}
+
+.secondary:active{
+    background-color: #e8c7a1;
+}
+
+.dark button{
+    background-color: gray;
+    color: white;
+}
+
+.dark .primary{
+    background-color: rgba(117, 112, 138, 0.75);
+}
+
+.dark .primary:hover{
+    background-color: rgba(91, 87, 108, 0.75);
+}
+
+.dark .primary:active{
+    background-color: rgba(64, 59, 84, 0.75);
+}
+
+.dark .secondary{
+    background-color: #101013ab;
+}
+
+.dark .secondary:hover{
+    background-color: #101013;
+}
+
+.dark .secondary:active{
+    background-color: #000000;
+}
+
+.disabledBtn{
+    background-color: #d1d1d1;
+}
+
+.disabledBtn:hover{
+    background-color: #d1d1d1;
+}
+
+.dark .disabledBtn{
+    background-color: #555555;
+}
+
+.dark .disabledBtn:hover{
+    background-color: #555555;
+}
+
+.delete{
+    background-color: #fd2e2e;
+    color: white;
+}
+
+.delete:hover{
+    background-color: #c31010;
+}
+
+.delete:active{
+    background-color: #991212;
+}
+
+.dark .delete{
+    background-color: #df7676;
+    color: black;
+}
+
+.dark .delete:hover{
+    background-color: #ff9191;
+}
+
+.dark .delete:active{
+    background-color: #ee8989;
+}
