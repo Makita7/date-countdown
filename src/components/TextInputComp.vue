@@ -12,7 +12,10 @@ const props = defineProps({
         type: String,
         default: "Input Label"
     },
-    modelValue: String,
+    modelValue: {
+        type: String,
+        default: '',
+    },
     minLength: {
         type: Number || String,
         default: 0,
@@ -45,7 +48,7 @@ function checkInput(){
         <label for="text-input">{{ title }}</label>
         <input
             :value="modelValue"
-            @input="e => emits('update:modelValue', e.target.value)"
+            @input="e => {if (e.target) emits('update:modelValue', (e.target as HTMLInputElement).value )}"
             @change="checkInput"
             v-focus
             type="text" id="text-input" />

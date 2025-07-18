@@ -2,9 +2,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import { useCounterStore } from "@/stores/counter";
-import CountdownSegment from "@/components/CountdownSegment.vue";
 import { useRoute } from "vue-router";
 import { useDialogsStore } from "@/stores/dialogs";
+import CountdownSegment from "@/components/CountdownSegment.vue";
 
 const store = useCounterStore();
 const dialogStore = useDialogsStore();

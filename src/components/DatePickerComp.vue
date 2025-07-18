@@ -25,7 +25,7 @@ const minDate = ref(currentDate.toISOString().split('T'));
 let errorDateInput = ref();
 
 function ValidateDateInput() {
-    dateIsValid.value = props.modelValue > minDate.value[0];
+    dateIsValid.value = (props.modelValue ?? '') > minDate.value[0];
 
     if(dateIsValid.value === false){
         emits('setNullDate');
@@ -42,8 +42,8 @@ function ValidateDateInput() {
         <label for="date-picker">{{ props.title }}</label>
         <input
             :value="props.modelValue"
-            @click="e => e.currentTarget.showPicker()"
-            @input="e => emits('update:modelValue', e.target.value)"
+            @click="e => { if (e.currentTarget) (e.currentTarget as HTMLInputElement).showPicker(); }"
+            @input="e => { if (e.target) emits('update:modelValue', (e.target as HTMLInputElement).value); }"
             @change="ValidateDateInput()"
             type="date"
             id="date-picker"

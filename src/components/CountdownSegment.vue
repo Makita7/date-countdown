@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { defineComponent, defineProps } from 'vue';
 import { useCounterStore } from '@/stores/counter';
 
